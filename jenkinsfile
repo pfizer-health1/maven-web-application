@@ -1,0 +1,42 @@
+node 
+{
+
+def mavenHome = tool name: "maven3.8.1"
+
+stage ('CheckoutCode')
+{
+git branch: 'development', credentialsId: 'cb9b97c8-ea1a-4247-97e8-fc77e3d3cb0f', url: 'https://github.com/pfizer-health1/maven-web-application.git'
+}
+
+stage ('Build')
+
+{
+sh "${mavenHome}/bin/mvn clean package"
+}
+
+stage ('ExecuteSonarQubeReport')
+{
+sh "${mavenHome}/bin/mvn sonar:sonar"
+}
+
+stage ('UploadArtifactsintoNexus')
+{
+sh "${mavenHome}/bin/mvn deploy"
+}
+
+stage ('DeployToTomcat')
+{
+sshagent(['7e05b104-fb16-41ab-ab64-89841a3b88cd']) {
+    sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@65.2.142.96:/opt/apache-tomcat-9.0.46/webapps/"
+}
+}
+
+stage ('SendEmailNotification')
+{
+   emailext body: '''Build is Successful 
+
+Regards
+
+Kumar''', subject: 'Build Over- Sucess', to: 'nkswamy7@gmail.com' 
+}
+}
