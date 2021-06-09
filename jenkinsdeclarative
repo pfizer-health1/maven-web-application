@@ -7,6 +7,15 @@ tools
 maven 'maven3.8.1'
 }
 
+triggers{
+pollscm('* * * * *')
+}
+options
+{
+timestamps()
+([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '3', daysToKeepStr: '', numToKeepStr: '3'))])
+}
+
 stages{
 
 stage('CheckoutCode')
