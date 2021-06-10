@@ -5,7 +5,7 @@ def mavenHome = tool name: "maven3.8.1"
 
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '3', daysToKeepStr: '', numToKeepStr: '3')), pipelineTriggers([pollSCM('* * * * * ')])])
 
-/*
+
 //echo "GitHub BranhName ${env.BRANCH_NAME}"
   //echo "Jenkins Job Number is: -->  ${env.BUILD_NUMBER}"
   echo "Jenkins Node Name is: --> ${env.NODE_NAME}"
@@ -13,7 +13,7 @@ properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKe
   echo "Jenkins Home is: --> ${env.JENKINS_HOME}"
   echo "Jenkins URL is: -->  ${env.JENKINS_URL}"
   echo "JOB Name is: -->  ${env.JOB_NAME}"
-  */
+
 stage ('CheckoutCode')
 {
 git branch: 'development', credentialsId: 'cb9b97c8-ea1a-4247-97e8-fc77e3d3cb0f', url: 'https://github.com/pfizer-health1/maven-web-application.git'
